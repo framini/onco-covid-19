@@ -8,6 +8,12 @@ const breakpoints = ['40em', '52em', '64em'];
 
 const theme = {
   ...chakraTheme,
+  shadows: {
+    ...chakraTheme.shadows,
+    sm: '0px 2px 13px rgba(52, 152, 140, 0.15)',
+    md:
+      '0px 2px 6px rgba(0, 0, 0, 0.03), 0px 4px 12px rgba(117, 194, 185, 0.10)',
+  },
   colors: {
     ...chakraTheme.colors,
     black: '#16161D',

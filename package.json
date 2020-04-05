@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@chakra-ui/core": "^0.7.0",
+    "@contentful/rich-text-react-renderer": "^13.4.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "contentful": "^7.14.2",
@@ -22,6 +23,7 @@
     "preact-render-to-string": "^5.1.4",
     "react": "github:preact-compat/react#1.0.0",
     "react-dom": "github:preact-compat/react-dom#1.0.0",
+    "react-icons": "^3.9.0",
     "react-ssr-prepass": "npm:preact-ssr-prepass@^1.0.1"
   },
   "devDependencies": {
