@@ -5,3 +5,5 @@ export interface Advice {
     content: Document;
   };
 }
+
+export type KnownRoutes = 'home' | 'pacientes-en-tratamiento';

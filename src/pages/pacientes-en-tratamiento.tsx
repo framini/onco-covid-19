@@ -6,12 +6,12 @@ import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 
-interface HomeProps {
+interface PacientesEnTratamientoProps {
   title: string;
   info: Advice[];
 }
 
-const Home = (props: HomeProps) => {
+const Home = (props: PacientesEnTratamientoProps) => {
   return (
     <CenteredContent>
       <Stack spacing={8} alignItems="center">
@@ -24,25 +24,6 @@ const Home = (props: HomeProps) => {
         >
           {props.title}
         </Heading>
-
-        <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
-          {props.info.map((advice: Advice) => {
-            return (
-              <Card>
-                <Stack spacing={5}>
-                  <Box>
-                    <Card.Title>{advice.fields.title}</Card.Title>
-                  </Box>
-                  <Box>
-                    <Stack spacing={3}>
-                      {documentToReactComponents(advice.fields.content)}
-                    </Stack>
-                  </Box>
-                </Stack>
-              </Card>
-            );
-          })}
-        </Grid>
       </Stack>
     </CenteredContent>
   );
@@ -51,9 +32,6 @@ const Home = (props: HomeProps) => {
 export async function getStaticProps(context: NextPageContext) {
   const { client } = require('../contentful/client');
 
-  // const entries = await client.getEntries({
-  //   content_type: 'home',
-  // });
   const entry = await client.getEntry('hXBelglMzWYcbpwYBEhiW');
 
   return {

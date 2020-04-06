@@ -16,7 +16,7 @@ export default class OncoCovid19App extends App {
       <CacheProvider value={cache}>
         <ThemeProvider theme={theme}>
           <CSSReset />
-          <ColorModeProvider>
+          <ColorModeProvider value="light">
             <BaseLayout>
               <Component {...pageProps} />
             </BaseLayout>
