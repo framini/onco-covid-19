@@ -1,32 +1,29 @@
 import { NextPageContext } from 'next';
 import { Grid, Stack, Heading, Box } from '@chakra-ui/core';
 
-import { Advice } from '../types';
+import { EntryAdvice } from '../types';
 import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
+import { H1 } from '../components/h1';
 
 interface HomeProps {
   title: string;
-  info: Advice[];
+  info: EntryAdvice[];
 }
 
 const Home = (props: HomeProps) => {
   return (
     <CenteredContent>
       <Stack spacing={8} alignItems="center">
-        <Heading
-          as="h1"
-          size={'lg'}
-          color="green.500"
-          maxW={['100%', '80%', '700px']}
-          textAlign="center"
-        >
-          {props.title}
-        </Heading>
+        <H1>{props.title}</H1>
 
         <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
-          {props.info.map((advice: Advice) => {
+          {props.info.map((advice: EntryAdvice, i) => {
+            if (!advice.fields) {
+              return null;
+            }
+
             return (
               <Card>
                 <Stack spacing={5}>

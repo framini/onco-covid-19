@@ -5,7 +5,7 @@ type CardTitleProps = BoxProps;
 
 const CardTitle = (props: CardTitleProps) => {
   return (
-    <Heading as="h2" color="green.700" size="md">
+    <Heading as="h2" color="black" size="md">
       {props.children}
     </Heading>
   );

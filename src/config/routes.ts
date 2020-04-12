@@ -1,13 +1,6 @@
-import { KnownRoutes } from '../types';
+import { KnownRoutes, RouteDef } from '../types';
 
-type PathsConfig = Record<
-  KnownRoutes,
-  {
-    pattern?: boolean;
-    href: string;
-    name: string;
-  }
->;
+type PathsConfig = Record<KnownRoutes, RouteDef>;
 
 export const routesConfig: PathsConfig = {
   home: {
@@ -17,5 +10,9 @@ export const routesConfig: PathsConfig = {
   'pacientes-en-tratamiento': {
     href: '/pacientes-en-tratamiento',
     name: 'Pacientes en Tratamiento',
+  },
+  contacto: {
+    href: '/contacto',
+    name: 'Contacto',
   },
 };

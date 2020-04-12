@@ -1,29 +1,48 @@
 import { NextPageContext } from 'next';
-import { Grid, Stack, Heading, Box } from '@chakra-ui/core';
+import { Grid, Stack, Heading, Box, Text } from '@chakra-ui/core';
 
-import { Advice } from '../types';
+import { EntryAdvice } from '../types';
 import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
+import { H1 } from '../components/h1';
 
 interface PacientesEnTratamientoProps {
   title: string;
-  info: Advice[];
+  description: any;
+  info: EntryAdvice[];
 }
 
-const Home = (props: PacientesEnTratamientoProps) => {
+const PacientesEnTratamiento = (props: PacientesEnTratamientoProps) => {
   return (
     <CenteredContent>
       <Stack spacing={8} alignItems="center">
-        <Heading
-          as="h1"
-          size={'lg'}
-          color="green.500"
-          maxW={['100%', '80%', '700px']}
-          textAlign="center"
-        >
-          {props.title}
-        </Heading>
+        <H1>{props.title}</H1>
+
+        <Text>{documentToReactComponents(props.description)}</Text>
+
+        <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
+          {props.info.map((advice: EntryAdvice, i) => {
+            if (!advice.fields) {
+              return null;
+            }
+
+            return (
+              <Card>
+                <Stack spacing={5}>
+                  <Box>
+                    <Card.Title>{advice.fields.title}</Card.Title>
+                  </Box>
+                  <Box>
+                    <Stack spacing={3}>
+                      {documentToReactComponents(advice.fields.content)}
+                    </Stack>
+                  </Box>
+                </Stack>
+              </Card>
+            );
+          })}
+        </Grid>
       </Stack>
     </CenteredContent>
   );
@@ -32,7 +51,7 @@ const Home = (props: PacientesEnTratamientoProps) => {
 export async function getStaticProps(context: NextPageContext) {
   const { client } = require('../contentful/client');
 
-  const entry = await client.getEntry('hXBelglMzWYcbpwYBEhiW');
+  const entry = await client.getEntry('5FH3GSnsNaskgqY2vmRVnb');
 
   return {
     props: {
@@ -41,4 +60,4 @@ export async function getStaticProps(context: NextPageContext) {
   };
 }
 
-export default Home;
+export default PacientesEnTratamiento;

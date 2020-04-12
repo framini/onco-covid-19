@@ -13,24 +13,38 @@ import {
   useDisclosure,
   List,
   ListItem,
+  Text,
 } from '@chakra-ui/core';
-import { FaBriefcaseMedical, FaBars } from 'react-icons/fa';
+import { FaBars } from 'react-icons/fa';
 import { useMedia } from 'react-use';
 import { NavLink } from './nav-link';
-import { getRouteProps } from '../utils/routes';
+import { Link } from './link';
+import { getRouteProps, isRouteActive } from '../utils/routes';
 import { routesConfig } from '../config/routes';
+import Logo from '../assets/svg/logo.svg';
+import LogoText from '../assets/svg/logo-text.svg';
+import { useRouter } from 'next/dist/client/router';
 
 const InlineMenu = () => {
   const allRoutes = React.useMemo(() => Object.keys(routesConfig), []);
+  const router = useRouter();
 
   return (
-    <Stack direction="row">
+    <Stack direction="row" spacing={10}>
       {allRoutes.map((route: any) => {
         // @ts-ignore
         const name = routesConfig[route].name;
+        const routeProps = getRouteProps(route);
 
         if (name) {
-          return <NavLink {...getRouteProps(route)}>{name}</NavLink>;
+          return (
+            <NavLink
+              isActive={isRouteActive(routeProps, router.asPath)}
+              {...routeProps}
+            >
+              {name}
+            </NavLink>
+          );
         }
 
         return null;
@@ -90,7 +104,6 @@ const DrawerMenu = React.memo(
 DrawerMenu.displayName = 'MobileMenu';
 
 export const Header = () => {
-  const theme = useTheme();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef(null);
   const isWide = useMedia('(min-width: 800px)');
@@ -100,15 +113,39 @@ export const Header = () => {
       <Box as="header" height={['60px', '80px']} shadow="sm" p="20px">
         <Stack direction="row" alignItems="center" height="100%">
           <Box>
-            <NavLink {...getRouteProps('home')}>
-              <FaBriefcaseMedical
-                style={{
-                  fill: theme.colors.green[500],
-                  width: '30px',
-                  height: '30px',
-                }}
-              />
-            </NavLink>
+            <Link {...getRouteProps('home')}>
+              <Stack
+                as="span"
+                spacing={isWide ? 4 : 2}
+                direction="row"
+                align="center"
+              >
+                <Box as="span">
+                  <Logo
+                    style={
+                      isWide
+                        ? {
+                            width: '35px',
+                          }
+                        : {
+                            width: '25px',
+                          }
+                    }
+                  />
+                </Box>
+                <LogoText
+                  style={
+                    isWide
+                      ? {
+                          width: '140px',
+                        }
+                      : {
+                          width: '100px',
+                        }
+                  }
+                />
+              </Stack>
+            </Link>
           </Box>
           {isWide ? (
             <Stack alignItems="center" flexGrow={1}>

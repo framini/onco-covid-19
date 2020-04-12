@@ -30,11 +30,16 @@ module.exports = {
       config.entry = () =>
         entry().then((entries) => {
           entries['main.js'] = ['preact/debug'].concat(
-            entries['main.js'] || []
+            entries['main.js'] || [],
           );
           return entries;
         });
     }
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
 
     return config;
   },

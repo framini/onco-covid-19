@@ -29,5 +29,5 @@
     "noEmit": true
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/themes/default.tss"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/themes/default.ts"]
 }
