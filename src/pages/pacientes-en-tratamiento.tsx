@@ -6,6 +6,7 @@ import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { H1 } from '../components/h1';
+import { HeroSection } from '../components/hero';
 
 interface PacientesEnTratamientoProps {
   title: string;
@@ -15,12 +16,10 @@ interface PacientesEnTratamientoProps {
 
 const PacientesEnTratamiento = (props: PacientesEnTratamientoProps) => {
   return (
-    <CenteredContent>
-      <Stack spacing={8} alignItems="center">
-        <H1>{props.title}</H1>
+    <Stack spacing={8} alignItems="center">
+      <HeroSection title={props.title} description={props.description} />
 
-        <Text>{documentToReactComponents(props.description)}</Text>
-
+      <CenteredContent>
         <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
           {props.info.map((advice: EntryAdvice, i) => {
             if (!advice.fields) {
@@ -43,8 +42,8 @@ const PacientesEnTratamiento = (props: PacientesEnTratamientoProps) => {
             );
           })}
         </Grid>
-      </Stack>
-    </CenteredContent>
+      </CenteredContent>
+    </Stack>
   );
 };
 

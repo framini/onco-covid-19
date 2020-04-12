@@ -28,12 +28,11 @@ export const NavLink = (props: NavLink) => {
       css={[
         defaultStyles,
         {
-          color: theme.colors.blue[900],
+          color: theme.colors.gray[600],
         },
         props.isActive && {
           position: 'relative',
-          // backgroundColor: theme.colors.blue[100],
-          // color: theme.colors.white,
+          color: theme.colors.gray[800],
           overflow: 'hidden',
           '&:after': {
             position: 'absolute',

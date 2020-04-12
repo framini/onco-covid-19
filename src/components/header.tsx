@@ -77,7 +77,7 @@ const DrawerMenu = React.memo(
 
           <DrawerBody>
             <Stack as="nav">
-              <List>
+              <List spacing={4}>
                 {allRoutes.map((route: any) => {
                   // @ts-ignore
                   const name = routesConfig[route].name;
@@ -110,7 +110,14 @@ export const Header = () => {
 
   return (
     <>
-      <Box as="header" height={['60px', '80px']} shadow="sm" p="20px">
+      <Box
+        as="header"
+        height={['60px', '80px']}
+        shadow="sm"
+        p="20px"
+        position="relative"
+        zIndex={1}
+      >
         <Stack direction="row" alignItems="center" height="100%">
           <Box>
             <Link {...getRouteProps('home')}>
@@ -156,7 +163,7 @@ export const Header = () => {
               <Button
                 leftIcon={FaBars}
                 ref={btnRef}
-                variantColor="teal"
+                variantColor="gray.800"
                 onClick={onOpen}
                 variant="outline"
               >

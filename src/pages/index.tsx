@@ -6,6 +6,8 @@ import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { H1 } from '../components/h1';
+import { Hero, HeroWithImage } from '../components/hero';
+import DoctorImage from '../assets/svg/doctor-woman.svg';
 
 interface HomeProps {
   title: string;
@@ -14,34 +16,44 @@ interface HomeProps {
 
 const Home = (props: HomeProps) => {
   return (
-    <CenteredContent>
-      <Stack spacing={8} alignItems="center">
-        <H1>{props.title}</H1>
+    <Stack spacing={5}>
+      <HeroWithImage title={props.title}>
+        <Box paddingTop={10}>
+          <DoctorImage
+            style={{
+              height: '400px',
+            }}
+          />
+        </Box>
+      </HeroWithImage>
 
-        <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
-          {props.info.map((advice: EntryAdvice, i) => {
-            if (!advice.fields) {
-              return null;
-            }
+      <CenteredContent>
+        <Stack spacing={8} alignItems="center">
+          <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
+            {props.info.map((advice: EntryAdvice, i) => {
+              if (!advice.fields) {
+                return null;
+              }
 
-            return (
-              <Card>
-                <Stack spacing={5}>
-                  <Box>
-                    <Card.Title>{advice.fields.title}</Card.Title>
-                  </Box>
-                  <Box>
-                    <Stack spacing={3}>
-                      {documentToReactComponents(advice.fields.content)}
-                    </Stack>
-                  </Box>
-                </Stack>
-              </Card>
-            );
-          })}
-        </Grid>
-      </Stack>
-    </CenteredContent>
+              return (
+                <Card>
+                  <Stack spacing={5}>
+                    <Box>
+                      <Card.Title>{advice.fields.title}</Card.Title>
+                    </Box>
+                    <Box>
+                      <Stack spacing={3}>
+                        {documentToReactComponents(advice.fields.content)}
+                      </Stack>
+                    </Box>
+                  </Stack>
+                </Card>
+              );
+            })}
+          </Grid>
+        </Stack>
+      </CenteredContent>
+    </Stack>
   );
 };
 

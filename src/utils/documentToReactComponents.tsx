@@ -19,7 +19,7 @@ export const documentToReactComponents = (document: Document) => {
 
         return (
           <ListItem>
-            <ListIcon icon="arrow-forward" color="green.600" />
+            <ListIcon icon="arrow-forward" color="purple.500" />
             {contentfulToReact(content[0], {
               renderNode: {
                 [BLOCKS.PARAGRAPH]: (node: any, children) => {
