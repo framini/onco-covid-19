@@ -18,7 +18,6 @@ const PacientesEnTratamiento = (props: PacientesEnTratamientoProps) => {
   return (
     <Stack spacing={8} alignItems="center">
       <HeroSection title={props.title} description={props.description} />
-
       <CenteredContent>
         <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
           {props.info.map((advice: EntryAdvice, i) => {

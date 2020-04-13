@@ -163,7 +163,7 @@ export const Header = () => {
               <Button
                 leftIcon={FaBars}
                 ref={btnRef}
-                variantColor="gray.800"
+                variantColor="gray"
                 onClick={onOpen}
                 variant="outline"
               >

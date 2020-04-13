@@ -88,6 +88,26 @@ const HeroSection = (props: HeroSectionProps) => {
   );
 };
 
+type HeroSplitContent = BoxProps;
+
+const HeroSplitContent = (props: HeroSplitContent) => {
+  return (
+    <Hero height="100%" color="gray.600" {...props}>
+      <Grid
+        templateAreas={['"row1" "row2"', '"row1" "row2"', '"row1 row2"']}
+        gridTemplateColumns={['1fr', '1fr', '1fr 1fr']}
+        height="100%"
+      >
+        {props.children}
+      </Grid>
+    </Hero>
+  );
+};
+
+HeroSplitContent.Col = (props: BoxProps) => {
+  return <Box {...props}>{props.children}</Box>;
+};
+
 Hero.Image = HeroImage;
 
-export { Hero, HeroWithImage, HeroSection };
+export { Hero, HeroWithImage, HeroSection, HeroSplitContent };

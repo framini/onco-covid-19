@@ -1,20 +1,23 @@
 import React from 'react';
 import {
+  Box,
   FormControl,
   FormLabel,
   FormErrorMessage,
   FormHelperText,
   Input,
+  BoxProps,
 } from '@chakra-ui/core';
 import { Field, FieldValidator, FieldProps } from 'formik';
 
-interface InputFieldProps {
+type InputFieldProps = {
   id: string;
   name: string;
   placeholder?: string;
   helpText?: string;
   validate?: FieldValidator;
-}
+  required?: boolean;
+} & BoxProps;
 
 const defaultValidate = (name: string) => (value: string) => {
   let error;
@@ -31,29 +34,45 @@ export const InputField = ({
   name,
   helpText,
   placeholder = '',
+  required = false,
   validate: propsValidate,
+  ...restProps
 }: InputFieldProps) => {
   const validate = React.useMemo(() => {
     return defaultValidate(name);
   }, [name]);
 
+  const validateProp = required
+    ? {
+        validate: propsValidate ?? validate,
+      }
+    : {};
+
   return (
-    <Field name={id} validate={propsValidate ?? validate}>
-      {({ field, form }: FieldProps) => (
-        <FormControl
-          // @ts-ignore
-          isInvalid={typeof form.errors.name !== undefined && form.touched.name}
-        >
-          <FormLabel htmlFor={id}>{name}</FormLabel>
-          <Input {...field} id={id} placeholder={placeholder} />
-          {helpText && (
-            <FormHelperText id={`${name}-helper-text`}>
-              {helpText}
-            </FormHelperText>
-          )}
-          <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-        </FormControl>
-      )}
-    </Field>
+    <Box {...restProps}>
+      <Field name={id} {...validateProp}>
+        {({ field, form }: FieldProps) => {
+          return (
+            <FormControl
+              // @ts-ignore
+              isInvalid={
+                typeof form.errors[id] !== 'undefined' && form.touched[id]
+              }
+            >
+              <FormLabel htmlFor={id} color="gray.800">
+                {name}
+              </FormLabel>
+              <Input {...field} id={id} placeholder={placeholder} />
+              {helpText && (
+                <FormHelperText id={`${name}-helper-text`} color="gray.700">
+                  {helpText}
+                </FormHelperText>
+              )}
+              <FormErrorMessage>{form.errors[id]}</FormErrorMessage>
+            </FormControl>
+          );
+        }}
+      </Field>
+    </Box>
   );
 };

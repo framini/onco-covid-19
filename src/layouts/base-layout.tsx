@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid, Box } from '@chakra-ui/core';
 
 import { Header } from '../components/header';
 
@@ -8,9 +9,18 @@ interface BaseLayoutProps {
 
 export const BaseLayout = ({ children }: BaseLayoutProps) => {
   return (
-    <div>
-      <Header />
-      <main>{children}</main>
-    </div>
+    <Grid
+      templateAreas={['"header" "content"']}
+      templateRows={['60px 1fr', '80px 1fr']}
+      height="100vh"
+    >
+      <Box gridArea="header">
+        <Header />
+      </Box>
+
+      <Box as="main" gridArea="content">
+        {children}
+      </Box>
+    </Grid>
   );
 };
