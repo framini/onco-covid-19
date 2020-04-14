@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, BoxProps, Grid, Stack, Text } from '@chakra-ui/core';
+import { Box, BoxProps, Grid, Stack, Text, useTheme } from '@chakra-ui/core';
 import { Document } from '@contentful/rich-text-types';
 
 import { H1 } from './h1';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
+import { useIsWide } from '../hooks/use-is-wide';
 
 type HeroProps = {
   children: React.ReactNode;
@@ -50,18 +51,48 @@ type HeroWithImageProps = {
 } & BoxProps;
 
 const HeroWithImage = (props: HeroWithImageProps) => {
+  const isWide = useIsWide();
+
+  const titleColor = !isWide
+    ? {
+        color: 'white',
+      }
+    : {};
+
   return (
     <Hero {...props}>
       <Grid
-        templateAreas={['"title" "image"', '"title" "image"', '"title image"']}
-        gridTemplateColumns={['1fr', '1fr', '1.5fr 1fr']}
+        display={['block', 'block', 'grid']}
+        templateAreas={['"title image"']}
+        gridTemplateColumns={['1.5fr 1fr']}
         height="100%"
         alignItems="center"
+        position="relative"
+        overflow="hidden"
       >
-        <Box padding={10}>
-          <H1 gridArea="title">{props.title}</H1>
+        <Box
+          paddingX={[60, 60, 10]}
+          paddingY={20}
+          position="relative"
+          zIndex={1}
+          backgroundColor={[
+            'rgba(0, 65, 112, 0.7)',
+            'rgba(0, 65, 112, 0.7)',
+            'transparent',
+          ]}
+        >
+          <H1 gridArea="title" {...titleColor}>
+            {props.title}
+          </H1>
         </Box>
-        <Hero.Image gridArea="image" backgroundColor="blue.100">
+        <Hero.Image
+          gridArea="image"
+          backgroundColor="blue.100"
+          position={['absolute', 'absolute', 'relative']}
+          top={0}
+          left={0}
+          width={['100%', '100%', 'auto']}
+        >
           {props.children}
         </Hero.Image>
       </Grid>

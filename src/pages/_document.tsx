@@ -10,7 +10,7 @@ export default class OncoCovid19Document extends Document<any> {
 
   render() {
     return (
-      <html>
+      <html lang="es">
         <Head>
           <style
             data-emotion-css={this.props.ids.join(' ')}

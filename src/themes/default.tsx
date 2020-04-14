@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { theme as chakraTheme } from '@chakra-ui/core';
 
 const fonts = {
@@ -8,7 +6,11 @@ const fonts = {
   heading: "'PT Serif', serif",
 };
 
-const breakpoints = ['40em', '52em', '64em'];
+const breakpoints = [
+  '40em',
+  '52em',
+  '64em',
+] as typeof chakraTheme['breakpoints'];
 
 const theme = {
   ...chakraTheme,

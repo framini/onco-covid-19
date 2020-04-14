@@ -13,17 +13,17 @@ import {
   useDisclosure,
   List,
   ListItem,
-  Text,
 } from '@chakra-ui/core';
 import { FaBars } from 'react-icons/fa';
-import { useMedia } from 'react-use';
+import { useRouter } from 'next/router';
+
 import { NavLink } from './nav-link';
 import { Link } from './link';
 import { getRouteProps, isRouteActive } from '../utils/routes';
 import { routesConfig } from '../config/routes';
 import Logo from '../assets/svg/logo.svg';
 import LogoText from '../assets/svg/logo-text.svg';
-import { useRouter } from 'next/dist/client/router';
+import { useIsWide } from '../hooks/use-is-wide';
 
 const InlineMenu = () => {
   const allRoutes = React.useMemo(() => Object.keys(routesConfig), []);
@@ -106,7 +106,7 @@ DrawerMenu.displayName = 'MobileMenu';
 export const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef(null);
-  const isWide = useMedia('(min-width: 800px)');
+  const isWide = useIsWide();
 
   return (
     <>
