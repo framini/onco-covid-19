@@ -79,6 +79,17 @@ interface ContactFields {
 const ContactPage = () => {
   const [formStatus, setFormStatus] = React.useState<FormStatus>('');
 
+  const emailValidation = React.useCallback((value: string) => {
+    let error;
+    if (!value.trim()) {
+      error = 'Email es requerido.';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      error = 'Por favor introduzca una dirección de email válida.';
+    }
+
+    return error;
+  }, []);
+
   const initialValues: ContactFields = {
     name: '',
     email: '',
@@ -174,7 +185,12 @@ const ContactPage = () => {
 
                     <InputField id="name" name="Nombre y Apellido" required />
 
-                    <InputField id="email" name="Email" required />
+                    <InputField
+                      id="email"
+                      name="Email"
+                      validate={emailValidation}
+                      required
+                    />
 
                     <InputField id="dni" name="DNI" required />
 
