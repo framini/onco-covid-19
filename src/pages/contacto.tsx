@@ -1,11 +1,70 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Text, Box, Stack } from '@chakra-ui/core';
+import {
+  Button,
+  Text,
+  Box,
+  Stack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+} from '@chakra-ui/core';
 
-import { InputField } from '../components/input-renderer';
+import { InputField } from '../components/input-field';
 import { HeroSplitContent } from '../components/hero';
 import { H1 } from '../components/h1';
 import { Metatags } from '../components/metatags';
+import { SelectField } from '../components/select-field';
+
+type FormStatus = '' | 'success' | 'error';
+
+interface ConfirmationProps {
+  status: FormStatus;
+}
+
+const Confirmation = (props: ConfirmationProps) => {
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+  const onClose = React.useCallback(() => {
+    setShowConfirmation(false);
+  }, []);
+  const { status } = props;
+
+  React.useEffect(() => {
+    if (status === 'error' || status === 'success') {
+      setShowConfirmation(true);
+    }
+  }, [status]);
+
+  const title =
+    status === 'error' ? 'La consulta no pudo ser enviada' : 'Consulta enviada';
+  const message =
+    status === 'error'
+      ? 'Lo sentimos. Su consulta no ha podido ser enviada. Por favor intente más tarde o envíenos directamente un email a: hddevaperon@gmail.com'
+      : 'Su consulta ha sido enviada con éxito!';
+
+  return (
+    <Modal
+      closeOnOverlayClick={false}
+      isOpen={showConfirmation}
+      onClose={onClose}
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{title}:</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={6}>{message}</ModalBody>
+
+        <ModalFooter>
+          <Button onClick={onClose}>Cerrar</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
 
 interface ContactFields {
   name: string;
@@ -14,12 +73,12 @@ interface ContactFields {
   historyNum: string;
   phone: string;
   address: string;
+  reason: string;
 }
 
 const ContactPage = () => {
-  const [formStatus, setFormStatus] = React.useState<'' | 'success' | 'error'>(
-    '',
-  );
+  const [formStatus, setFormStatus] = React.useState<FormStatus>('');
+
   const initialValues: ContactFields = {
     name: '',
     email: '',
@@ -27,6 +86,7 @@ const ContactPage = () => {
     historyNum: '',
     phone: '',
     address: '',
+    reason: '',
   };
 
   return (
@@ -35,6 +95,9 @@ const ContactPage = () => {
         title="Contacto - Hospital Escuela Eva Perón"
         description="Información general para pacientes en tratamiento oncológico"
       />
+
+      <Confirmation status={formStatus} />
+
       <HeroSplitContent>
         <HeroSplitContent.Col
           backgroundColor="blue.100"
@@ -80,6 +143,7 @@ const ContactPage = () => {
                   actions.setSubmitting(false);
                   if (resp.ok) {
                     setFormStatus('success');
+                    actions.resetForm();
                   } else {
                     setFormStatus('error');
                   }
@@ -93,6 +157,21 @@ const ContactPage = () => {
               return (
                 <Form>
                   <Stack spacing={4}>
+                    <SelectField
+                      id="reason"
+                      name="Motivo de la consulta"
+                      required
+                    >
+                      <option value="Receta">Receta</option>
+                      <option value="Banco de drogas">Banco de drogas</option>
+                      <option value="Turno Quimioterapia">
+                        Turno Quimioterapia
+                      </option>
+                      <option value="Turno para evaluación médica.">
+                        Turno para evaluación médica.
+                      </option>
+                    </SelectField>
+
                     <InputField id="name" name="Nombre y Apellido" required />
 
                     <InputField id="email" name="Email" required />
