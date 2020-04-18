@@ -112,10 +112,9 @@ const ContactPage = () => {
       <HeroSplitContent>
         <HeroSplitContent.Col
           backgroundColor="blue.100"
-          padding={10}
+          padding={5}
           display="flex"
           flexDirection="column"
-          // alignItems="flex-end"
           alignItems={['flex-start', 'flex-start', 'flex-end']}
         >
           <Box
@@ -124,7 +123,7 @@ const ContactPage = () => {
             alignItems={['flex-start']}
           >
             <Stack spacing={6}>
-              <H1 textAlign="left" color="blue.900">
+              <H1 textAlign="center" color="blue.900">
                 Nuestra vías de contacto
               </H1>
               <Stack as="address" spacing={2}>
@@ -135,7 +134,7 @@ const ContactPage = () => {
             </Stack>
           </Box>
         </HeroSplitContent.Col>
-        <HeroSplitContent.Col padding={10} maxW={600}>
+        <HeroSplitContent.Col padding={5} maxW={['auto', 'auto', 600]}>
           <Formik
             initialValues={initialValues}
             onSubmit={(values, actions) => {

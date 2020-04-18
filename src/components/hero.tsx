@@ -12,7 +12,7 @@ type HeroProps = {
 
 const Hero = ({ color = 'white', ...restProps }: HeroProps) => {
   return (
-    <Box color={color} background="white" {...restProps}>
+    <Box color={color} width="100%" background="white" {...restProps}>
       {restProps.children}
     </Box>
   );
@@ -35,7 +35,7 @@ const HeroImage = (props: HeroImageProps) => {
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
         h="100%"
-        display={['none', 'none', 'block']}
+        display={['none', 'none', 'none', 'block']}
       >
         <polygon points="0,0 25,0 0,100 0,100"></polygon>
       </Box>
@@ -62,7 +62,7 @@ const HeroWithImage = (props: HeroWithImageProps) => {
   return (
     <Hero {...props}>
       <Grid
-        display={['block', 'block', 'grid']}
+        display={['block', 'block', 'block', 'grid']}
         templateAreas={['"title image"']}
         gridTemplateColumns={['1.5fr 1fr']}
         height="100%"
@@ -71,11 +71,12 @@ const HeroWithImage = (props: HeroWithImageProps) => {
         overflow="hidden"
       >
         <Box
-          paddingX={[60, 60, 10]}
+          paddingX={[5, 60, 60, 10]}
           paddingY={20}
           position="relative"
           zIndex={1}
           backgroundColor={[
+            'rgba(0, 65, 112, 0.7)',
             'rgba(0, 65, 112, 0.7)',
             'rgba(0, 65, 112, 0.7)',
             'transparent',
@@ -88,10 +89,10 @@ const HeroWithImage = (props: HeroWithImageProps) => {
         <Hero.Image
           gridArea="image"
           backgroundColor="blue.100"
-          position={['absolute', 'absolute', 'relative']}
+          position={['absolute', 'absolute', 'absolute', 'relative']}
           top={0}
           left={0}
-          width={['100%', '100%', 'auto']}
+          width={['100%', '100%', '100%', 'auto']}
         >
           {props.children}
         </Hero.Image>
@@ -102,18 +103,25 @@ const HeroWithImage = (props: HeroWithImageProps) => {
 
 type HeroSectionProps = {
   title: string;
-  description: Document;
+  description?: Document;
 } & BoxProps;
 
 const HeroSection = (props: HeroSectionProps) => {
   return (
     <Hero backgroundColor="blue.100" {...props}>
-      <Stack spacing={4} maxWidth={['90%', '70%']} paddingY={10} marginX="auto">
+      <Stack
+        spacing={4}
+        maxWidth={['90%', '70%']}
+        paddingY={[5, 5, 10]}
+        marginX="auto"
+      >
         <H1 color="blue.900">{props.title}</H1>
 
-        <Text color="gray.700">
-          {documentToReactComponents(props.description)}
-        </Text>
+        {props.description && (
+          <Text color="gray.700">
+            {documentToReactComponents(props.description)}
+          </Text>
+        )}
       </Stack>
     </Hero>
   );

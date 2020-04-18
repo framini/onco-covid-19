@@ -15,4 +15,12 @@ export const routesConfig: PathsConfig = {
     href: '/contacto',
     name: 'Contacto',
   },
+  'preguntas-frecuentes': {
+    href: '/preguntas-frecuentes',
+    name: 'Preguntas Frecuentes',
+  },
+  'recomendaciones-psico-oncologia': {
+    href: '/recomendaciones-psico-oncologia',
+    name: 'Recomendaciones de Psico-Oncología',
+  },
 };

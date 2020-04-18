@@ -4,6 +4,9 @@ import { Text, List, ListItem, ListIcon, Link } from '@chakra-ui/core';
 
 import {} from 'contentful';
 import { getContentType } from './contentful';
+import { H1 } from '../components/h1';
+import { H2 } from '../components/h2';
+import { H3 } from '../components/h3';
 
 export const documentToReactComponents = (document: Document) => {
   const options = {
@@ -29,6 +32,15 @@ export const documentToReactComponents = (document: Document) => {
             })}
           </ListItem>
         );
+      },
+      [BLOCKS.HEADING_1]: (node: any, children: any) => {
+        return <H1 marginTop={4}>{children}</H1>;
+      },
+      [BLOCKS.HEADING_2]: (node: any, children: any) => {
+        return <H2 marginTop={4}>{children}</H2>;
+      },
+      [BLOCKS.HEADING_3]: (node: any, children: any) => {
+        return <H3 marginTop={4}>{children}</H3>;
       },
       'embedded-entry-inline': (node: any, children: any) => {
         const contentType = getContentType(node.data.target);

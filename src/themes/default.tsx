@@ -9,7 +9,7 @@ const fonts = {
 const breakpoints = [
   '40em',
   '52em',
-  '64em',
+  '70em',
 ] as typeof chakraTheme['breakpoints'];
 
 const theme = {

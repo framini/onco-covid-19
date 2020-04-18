@@ -5,7 +5,7 @@ export const useIsWide = () => {
   const theme = useTheme();
 
   // @ts-ignore
-  const isWide = useMedia(`(min-width: ${theme.breakpoints[1]})`);
+  const isWide = useMedia(`(min-width: ${theme.breakpoints[2]})`);
 
   return isWide;
 };
