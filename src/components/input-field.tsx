@@ -7,6 +7,7 @@ import {
   FormHelperText,
   Input,
   BoxProps,
+  Textarea,
 } from '@chakra-ui/core';
 import { Field, FieldValidator, FieldProps } from 'formik';
 
@@ -17,6 +18,7 @@ type InputFieldProps = {
   helpText?: string;
   validate?: FieldValidator;
   required?: boolean;
+  type?: 'input' | 'textarea';
 } & BoxProps;
 
 const defaultValidate = (name: string) => (value: string) => {
@@ -36,6 +38,7 @@ export const InputField = ({
   placeholder = '',
   required = false,
   validate: propsValidate,
+  type = 'input',
   ...restProps
 }: InputFieldProps) => {
   const validate = React.useMemo(() => {
@@ -62,7 +65,11 @@ export const InputField = ({
               <FormLabel htmlFor={id} color="gray.800">
                 {name}
               </FormLabel>
-              <Input {...field} id={id} placeholder={placeholder} />
+              {type === 'input' ? (
+                <Input {...field} id={id} placeholder={placeholder} />
+              ) : (
+                <Textarea {...field} id={id} placeholder={placeholder} />
+              )}
               {helpText && (
                 <FormHelperText id={`${name}-helper-text`} color="gray.700">
                   {helpText}

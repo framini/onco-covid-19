@@ -1,8 +1,19 @@
 import { Document } from '@contentful/rich-text-types';
 import { Entry } from 'contentful';
 import { ParsedUrlQuery } from 'querystring';
+import { NextPage } from 'next';
 
-export type FAQSection = Entry<{
+export type GlobalInfoProps = EntryGlobalInfo['fields'] & {
+  showGlobalAnnouncement?: boolean;
+};
+
+export type EntryGlobalInfo = Entry<{
+  title: string;
+  announcement: EntryAnnouncement;
+  footer: Document;
+}>;
+
+export type EntryFAQSection = Entry<{
   title: string;
   description: any;
   questions: EntryAdvice[];
@@ -10,6 +21,11 @@ export type FAQSection = Entry<{
 }>;
 
 export type EntryAdvice = Entry<{
+  title: string;
+  content: Document;
+}>;
+
+export type EntryAnnouncement = Entry<{
   title: string;
   content: Document;
 }>;
@@ -33,3 +49,14 @@ export interface RouteDef {
   href: string;
   name: string;
 }
+
+export type PageWithGlobalProps<T> = NextPage<T> & {
+  getGlobalProps: (pageProps: T) => GlobalInfoProps;
+};
+
+export type BasePage<T> = {
+  globalInfo: GlobalInfoProps;
+  pageContent: T & {
+    globalAnnouncement?: boolean;
+  };
+};

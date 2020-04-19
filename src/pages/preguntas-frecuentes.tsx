@@ -1,4 +1,4 @@
-import { NextPageContext } from 'next';
+import { GetStaticProps } from 'next';
 import {
   Grid,
   Stack,
@@ -11,20 +11,29 @@ import {
   useTheme,
 } from '@chakra-ui/core';
 
-import { EntryAdvice, FAQSection } from '../types';
+import {
+  EntryAdvice,
+  EntryFAQSection,
+  PageWithGlobalProps,
+  BasePage,
+} from '../types';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { HeroSection } from '../components/hero';
 import { Metatags } from '../components/metatags';
 import { H3 } from '../components/h3';
+import { contentfulEntries } from '../contentful/entries';
+import { getGlobalProps } from '../utils/global-props';
 
-interface PreguntasFrecuentesProps {
+type PreguntasFrecuentesProps = BasePage<{
   title: string;
   moreInfo: any;
-  content: FAQSection[];
-}
+  content: EntryFAQSection[];
+}>;
 
-const PreguntasFrecuentes = (props: PreguntasFrecuentesProps) => {
+const PreguntasFrecuentes: PageWithGlobalProps<PreguntasFrecuentesProps> = (
+  props: PreguntasFrecuentesProps,
+) => {
   const theme = useTheme();
 
   return (
@@ -34,11 +43,11 @@ const PreguntasFrecuentes = (props: PreguntasFrecuentesProps) => {
         description="Preguntas de la situación actual, para pacientes que hacen quimioterapia, radioterapia y más."
       />
       <Stack spacing={8} alignItems="center">
-        <HeroSection title={props.title} marginBottom={0} />
+        <HeroSection title={props.pageContent.title} marginBottom={0} />
         <CenteredContent maxW={800}>
           <Grid templateColumns={['1fr']} gap={8}>
             <Stack spacing={12}>
-              {props.content.map((section: FAQSection) => {
+              {props.pageContent.content.map((section: EntryFAQSection) => {
                 return (
                   <Stack spacing={4}>
                     <H3>{section.fields.title}</H3>
@@ -81,16 +90,27 @@ const PreguntasFrecuentes = (props: PreguntasFrecuentesProps) => {
   );
 };
 
-export async function getStaticProps(context: NextPageContext) {
+// Workaround until _app supports getStaticProps
+PreguntasFrecuentes.getGlobalProps = getGlobalProps;
+
+export const getStaticProps: GetStaticProps<PreguntasFrecuentesProps> = async () => {
   const { client } = require('../contentful/client');
 
-  const entry = await client.getEntry('39MLiUiEfnXJqZwV0a3qL2', { include: 2 });
+  const globalInfo = await client.getEntry(contentfulEntries.globalInfo);
+  const entry = await client.getEntry(contentfulEntries.preguntasFrecuentes, {
+    include: 2,
+  });
 
   return {
     props: {
-      ...entry.fields,
+      globalInfo: {
+        ...globalInfo.fields,
+      },
+      pageContent: {
+        ...entry.fields,
+      },
     },
   };
-}
+};
 
 export default PreguntasFrecuentes;

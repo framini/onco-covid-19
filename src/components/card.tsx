@@ -15,7 +15,13 @@ type CardProps = BoxProps;
 
 export const Card = (props: CardProps) => {
   return (
-    <Box p={['20px', '20px', '30px']} shadow="md" borderRadius="2px" {...props}>
+    <Box
+      p={['20px', '20px', '30px']}
+      backgroundColor="white"
+      shadow="md"
+      borderRadius="2px"
+      {...props}
+    >
       {props.children}
     </Box>
   );

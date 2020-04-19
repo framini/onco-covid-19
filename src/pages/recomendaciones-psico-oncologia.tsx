@@ -1,18 +1,21 @@
-import { NextPageContext } from 'next';
-import { Grid, Stack, Box } from '@chakra-ui/core';
+import { GetStaticProps } from 'next';
+import { Stack } from '@chakra-ui/core';
 import { Document } from '@contentful/rich-text-types';
 
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { HeroSection } from '../components/hero';
 import { Metatags } from '../components/metatags';
+import { contentfulEntries } from '../contentful/entries';
+import { PageWithGlobalProps, BasePage } from '../types';
+import { getGlobalProps } from '../utils/global-props';
 
-interface RecomendacionesPsicoOncologiaProps {
+type RecomendacionesPsicoOncologiaProps = BasePage<{
   title: string;
   content: Document;
-}
+}>;
 
-const RecomendacionesPsicoOncologia = (
+const RecomendacionesPsicoOncologia: PageWithGlobalProps<RecomendacionesPsicoOncologiaProps> = (
   props: RecomendacionesPsicoOncologiaProps,
 ) => {
   return (
@@ -22,25 +25,38 @@ const RecomendacionesPsicoOncologia = (
         description="Información general para pacientes en tratamiento oncológico"
       />
       <Stack spacing={8} alignItems="center">
-        <HeroSection title={props.title} />
+        <HeroSection title={props.pageContent.title} />
         <CenteredContent maxW={800}>
-          <Stack spacing={4}>{documentToReactComponents(props.content)}</Stack>
+          <Stack spacing={4}>
+            {documentToReactComponents(props.pageContent.content)}
+          </Stack>
         </CenteredContent>
       </Stack>
     </>
   );
 };
 
-export async function getStaticProps(context: NextPageContext) {
+// Workaround until _app supports getStaticProps
+RecomendacionesPsicoOncologia.getGlobalProps = getGlobalProps;
+
+export const getStaticProps: GetStaticProps<RecomendacionesPsicoOncologiaProps> = async () => {
   const { client } = require('../contentful/client');
 
-  const entry = await client.getEntry('42CcWzbFVQA76LUZ7JpAUz');
+  const globalInfo = await client.getEntry(contentfulEntries.globalInfo);
+  const entry = await client.getEntry(
+    contentfulEntries.recomendacionesPsicoOncologica,
+  );
 
   return {
     props: {
-      ...entry.fields,
+      globalInfo: {
+        ...globalInfo.fields,
+      },
+      pageContent: {
+        ...entry.fields,
+      },
     },
   };
-}
+};
 
 export default RecomendacionesPsicoOncologia;

@@ -1,20 +1,22 @@
-import { NextPageContext } from 'next';
+import { GetStaticProps } from 'next';
 import { Grid, Stack, Box } from '@chakra-ui/core';
 
-import { EntryAdvice } from '../types';
+import { EntryAdvice, PageWithGlobalProps, BasePage } from '../types';
 import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { HeroWithImage } from '../components/hero';
 import { Metatags } from '../components/metatags';
+import { contentfulEntries } from '../contentful/entries';
 import DoctorImage from '../assets/svg/doctor-woman.svg';
+import { getGlobalProps } from '../utils/global-props';
 
-interface HomeProps {
+type HomeProps = BasePage<{
   title: string;
   info: EntryAdvice[];
-}
+}>;
 
-const Home = (props: HomeProps) => {
+const Home: PageWithGlobalProps<HomeProps> = (props: HomeProps) => {
   return (
     <>
       <Metatags
@@ -22,8 +24,8 @@ const Home = (props: HomeProps) => {
         description="Información general para pacientes en tratamiento oncológico"
       />
 
-      <Stack spacing={5}>
-        <HeroWithImage title={props.title}>
+      <Stack spacing={5} backgroundColor="#f7f7f8">
+        <HeroWithImage title={props.pageContent.title}>
           <Box paddingTop={10}>
             <DoctorImage
               style={{
@@ -36,7 +38,7 @@ const Home = (props: HomeProps) => {
         <CenteredContent>
           <Stack spacing={8} alignItems="center">
             <Grid templateColumns={['1fr', '1fr', 'repeat(2, 1fr)']} gap={6}>
-              {props.info.map((advice: EntryAdvice, i) => {
+              {props.pageContent.info.map((advice: EntryAdvice, i) => {
                 if (!advice.fields) {
                   return null;
                 }
@@ -64,19 +66,25 @@ const Home = (props: HomeProps) => {
   );
 };
 
-export async function getStaticProps(context: NextPageContext) {
+// Workaround until _app supports getStaticProps
+Home.getGlobalProps = getGlobalProps;
+
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const { client } = require('../contentful/client');
 
-  // const entries = await client.getEntries({
-  //   content_type: 'home',
-  // });
-  const entry = await client.getEntry('hXBelglMzWYcbpwYBEhiW');
+  const globalInfo = await client.getEntry(contentfulEntries.globalInfo);
+  const entry = await client.getEntry(contentfulEntries.home);
 
   return {
     props: {
-      ...entry.fields,
+      globalInfo: {
+        ...globalInfo.fields,
+      },
+      pageContent: {
+        ...entry.fields,
+      },
     },
   };
-}
+};
 
 export default Home;

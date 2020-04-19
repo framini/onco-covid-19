@@ -2,7 +2,6 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import {
   Button,
-  Text,
   Box,
   Stack,
   Modal,
@@ -13,12 +12,19 @@ import {
   ModalBody,
   ModalFooter,
 } from '@chakra-ui/core';
+import { Document } from '@contentful/rich-text-types';
 
 import { InputField } from '../components/input-field';
 import { HeroSplitContent } from '../components/hero';
 import { H1 } from '../components/h1';
 import { Metatags } from '../components/metatags';
 import { SelectField } from '../components/select-field';
+import { PageWithGlobalProps, BasePage } from '../types';
+import { contentfulEntries } from '../contentful/entries';
+import { GetStaticProps } from 'next';
+import { createArrayFromString } from '../utils/contentful';
+import { documentToReactComponents } from '../utils/documentToReactComponents';
+import { getGlobalProps } from '../utils/global-props';
 
 type FormStatus = '' | 'success' | 'error';
 
@@ -74,9 +80,18 @@ interface ContactFields {
   phone: string;
   address: string;
   reason: string;
+  description: string;
 }
 
-const ContactPage = () => {
+type ContactPageProps = BasePage<{
+  address: Document;
+  contactType: string;
+  contactDescription: string;
+}>;
+
+const ContactPage: PageWithGlobalProps<ContactPageProps> = (
+  props: ContactPageProps,
+) => {
   const [formStatus, setFormStatus] = React.useState<FormStatus>('');
 
   const emailValidation = React.useCallback((value: string) => {
@@ -98,7 +113,11 @@ const ContactPage = () => {
     phone: '',
     address: '',
     reason: '',
+    description: '',
   };
+
+  const contactType = createArrayFromString(props.pageContent.contactType);
+  const contactDescription = props.pageContent.contactDescription;
 
   return (
     <>
@@ -115,7 +134,7 @@ const ContactPage = () => {
           padding={5}
           display="flex"
           flexDirection="column"
-          alignItems={['flex-start', 'flex-start', 'flex-end']}
+          alignItems={['center', 'center', 'flex-end']}
         >
           <Box
             display="flex"
@@ -127,9 +146,7 @@ const ContactPage = () => {
                 Nuestra vías de contacto
               </H1>
               <Stack as="address" spacing={2}>
-                <Text>Avenida San Martín 1645.</Text>
-                <Text>Granadero Baigorria. Santa Fe. Argentina.</Text>
-                <Text>Teléfono 0341-4711828 Int 251.</Text>
+                {documentToReactComponents(props.pageContent.address)}
               </Stack>
             </Stack>
           </Box>
@@ -172,15 +189,17 @@ const ContactPage = () => {
                       name="Motivo de la consulta"
                       required
                     >
-                      <option value="Receta">Receta</option>
-                      <option value="Banco de drogas">Banco de drogas</option>
-                      <option value="Turno Quimioterapia">
-                        Turno Quimioterapia
-                      </option>
-                      <option value="Turno para evaluación médica.">
-                        Turno para evaluación médica.
-                      </option>
+                      {contactType.map((reason: string) => {
+                        return <option value={reason}>{reason}</option>;
+                      })}
                     </SelectField>
+
+                    <InputField
+                      type="textarea"
+                      id="description"
+                      name="Descripción"
+                      helpText={contactDescription}
+                    />
 
                     <InputField id="name" name="Nombre y Apellido" required />
 
@@ -220,6 +239,27 @@ const ContactPage = () => {
       </HeroSplitContent>
     </>
   );
+};
+
+// Workaround until _app supports getStaticProps
+ContactPage.getGlobalProps = getGlobalProps;
+
+export const getStaticProps: GetStaticProps<ContactPageProps> = async () => {
+  const { client } = require('../contentful/client');
+
+  const globalInfo = await client.getEntry(contentfulEntries.globalInfo);
+  const entry = await client.getEntry(contentfulEntries.contacto);
+
+  return {
+    props: {
+      globalInfo: {
+        ...globalInfo.fields,
+      },
+      pageContent: {
+        ...entry.fields,
+      },
+    },
+  };
 };
 
 export default ContactPage;

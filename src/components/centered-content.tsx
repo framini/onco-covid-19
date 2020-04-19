@@ -5,7 +5,7 @@ type CenteredContentProps = BoxProps;
 
 export const CenteredContent = (props: CenteredContentProps) => {
   return (
-    <Box maxW="1080px" margin="0 auto" padding="20px" {...props}>
+    <Box maxW="1080px" margin="0 auto" padding="10px" {...props}>
       {props.children}
     </Box>
   );
