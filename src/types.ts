@@ -23,6 +23,7 @@ export type EntryFAQSection = Entry<{
 export type EntryAdvice = Entry<{
   title: string;
   content: Document;
+  moreInfo: any;
 }>;
 
 export type EntryAnnouncement = Entry<{
@@ -42,12 +43,13 @@ export type KnownRoutes =
   | 'pacientes-en-tratamiento'
   | 'contacto'
   | 'preguntas-frecuentes'
-  | 'recomendaciones-psico-oncologia';
+  | 'recomendaciones-psico-oncologia'
+  | 'generic-page';
 
 export interface RouteDef {
   pattern?: boolean;
   href: string;
-  name: string;
+  name?: string;
 }
 
 export type PageWithGlobalProps<T> = NextPage<T> & {
@@ -60,3 +62,9 @@ export type BasePage<T> = {
     globalAnnouncement?: boolean;
   };
 };
+
+export interface GenericEntryPage {
+  title: string;
+  slug: string;
+  content: Document;
+}

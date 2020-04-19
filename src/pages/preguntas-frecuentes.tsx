@@ -42,7 +42,7 @@ const PreguntasFrecuentes: PageWithGlobalProps<PreguntasFrecuentesProps> = (
         title="Preguntas Frecuentes - Hospital Escuela Eva Perón"
         description="Preguntas de la situación actual, para pacientes que hacen quimioterapia, radioterapia y más."
       />
-      <Stack spacing={8} alignItems="center">
+      <Stack spacing={8} alignItems="center" pb={10}>
         <HeroSection title={props.pageContent.title} marginBottom={0} />
         <CenteredContent maxW={800}>
           <Grid templateColumns={['1fr']} gap={8}>

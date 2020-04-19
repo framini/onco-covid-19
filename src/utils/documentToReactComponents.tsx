@@ -1,5 +1,5 @@
 import { documentToReactComponents as contentfulToReact } from '@contentful/rich-text-react-renderer';
-import { Document, BLOCKS, Node } from '@contentful/rich-text-types';
+import { Document, BLOCKS, INLINES } from '@contentful/rich-text-types';
 import { Text, List, ListItem, ListIcon, Link } from '@chakra-ui/core';
 
 import {} from 'contentful';
@@ -7,6 +7,8 @@ import { getContentType } from './contentful';
 import { H1 } from '../components/h1';
 import { H2 } from '../components/h2';
 import { H3 } from '../components/h3';
+import { EmbedYouTube } from '../components/embed-youtube';
+import { ExternalLink } from '../components/external-link';
 
 export const documentToReactComponents = (document: Document) => {
   const options = {
@@ -41,6 +43,14 @@ export const documentToReactComponents = (document: Document) => {
       },
       [BLOCKS.HEADING_3]: (node: any, children: any) => {
         return <H3 marginTop={4}>{children}</H3>;
+      },
+      // @ts-ignore
+      [INLINES.HYPERLINK]: (node: any, children) => {
+        if (node.data.uri.includes('youtube.com')) {
+          return <EmbedYouTube uri={node.data.uri} />;
+        }
+
+        return <ExternalLink href={node.data.uri}>{children}</ExternalLink>;
       },
       'embedded-entry-inline': (node: any, children: any) => {
         const contentType = getContentType(node.data.target);

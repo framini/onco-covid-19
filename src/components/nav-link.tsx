@@ -12,6 +12,7 @@ type NavLink = {
 
 const defaultStyles = css({
   padding: '5px 0',
+  border: 0,
   borderRadius: '4px',
   fontWeight: 600,
   '&:hover': {

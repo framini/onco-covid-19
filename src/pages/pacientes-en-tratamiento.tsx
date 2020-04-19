@@ -2,13 +2,12 @@ import { GetStaticProps } from 'next';
 import { Grid, Stack, Box } from '@chakra-ui/core';
 
 import { EntryAdvice, PageWithGlobalProps, BasePage } from '../types';
-import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
-import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { HeroSection } from '../components/hero';
 import { Metatags } from '../components/metatags';
 import { contentfulEntries } from '../contentful/entries';
 import { getGlobalProps } from '../utils/global-props';
+import { Advice } from '../components/advice';
 
 type PacientesEnTratamientoProps = BasePage<{
   title: string;
@@ -25,7 +24,7 @@ const PacientesEnTratamiento: PageWithGlobalProps<PacientesEnTratamientoProps> =
         title="Pacientes en Tratamiento - Hospital Escuela Eva Perón"
         description="Información general para pacientes en tratamiento oncológico"
       />
-      <Stack spacing={8} alignItems="center" backgroundColor="#f7f7f8">
+      <Stack spacing={8} alignItems="center" backgroundColor="#f7f7f8" pb={10}>
         <HeroSection
           title={props.pageContent.title}
           description={props.pageContent.description}
@@ -37,20 +36,7 @@ const PacientesEnTratamiento: PageWithGlobalProps<PacientesEnTratamientoProps> =
                 return null;
               }
 
-              return (
-                <Card>
-                  <Stack spacing={5}>
-                    <Box>
-                      <Card.Title>{advice.fields.title}</Card.Title>
-                    </Box>
-                    <Box>
-                      <Stack spacing={3}>
-                        {documentToReactComponents(advice.fields.content)}
-                      </Stack>
-                    </Box>
-                  </Stack>
-                </Card>
-              );
+              return <Advice {...advice.fields} />;
             })}
           </Grid>
         </CenteredContent>

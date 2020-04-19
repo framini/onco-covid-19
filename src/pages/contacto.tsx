@@ -128,115 +128,117 @@ const ContactPage: PageWithGlobalProps<ContactPageProps> = (
 
       <Confirmation status={formStatus} />
 
-      <HeroSplitContent>
-        <HeroSplitContent.Col
-          backgroundColor="blue.100"
-          padding={5}
-          display="flex"
-          flexDirection="column"
-          alignItems={['center', 'center', 'flex-end']}
-        >
-          <Box
+      <Box pb={10}>
+        <HeroSplitContent>
+          <HeroSplitContent.Col
+            backgroundColor="blue.100"
+            padding={5}
             display="flex"
             flexDirection="column"
-            alignItems={['flex-start']}
+            alignItems={['center', 'center', 'flex-end']}
           >
-            <Stack spacing={6}>
-              <H1 textAlign="center" color="blue.900">
-                Nuestra vías de contacto
-              </H1>
-              <Stack as="address" spacing={2}>
-                {documentToReactComponents(props.pageContent.address)}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems={['flex-start']}
+            >
+              <Stack spacing={6}>
+                <H1 textAlign="center" color="blue.900">
+                  Nuestra vías de contacto
+                </H1>
+                <Stack as="address" spacing={2}>
+                  {documentToReactComponents(props.pageContent.address)}
+                </Stack>
               </Stack>
-            </Stack>
-          </Box>
-        </HeroSplitContent.Col>
-        <HeroSplitContent.Col padding={5} maxW={['auto', 'auto', 600]}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={(values, actions) => {
-              fetch(
-                'https://api.formik.com/submit/onco-covid-19/primera-vez-en-oncologia',
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
+            </Box>
+          </HeroSplitContent.Col>
+          <HeroSplitContent.Col padding={5} maxW={['auto', 'auto', 600]}>
+            <Formik
+              initialValues={initialValues}
+              onSubmit={(values, actions) => {
+                fetch(
+                  'https://api.formik.com/submit/onco-covid-19/primera-vez-en-oncologia',
+                  {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(values),
                   },
-                  body: JSON.stringify(values),
-                },
-              )
-                .then((resp) => resp.json())
-                .then((resp) => {
-                  actions.setSubmitting(false);
-                  if (resp.ok) {
-                    setFormStatus('success');
-                    actions.resetForm();
-                  } else {
+                )
+                  .then((resp) => resp.json())
+                  .then((resp) => {
+                    actions.setSubmitting(false);
+                    if (resp.ok) {
+                      setFormStatus('success');
+                      actions.resetForm();
+                    } else {
+                      setFormStatus('error');
+                    }
+                  })
+                  .catch((e) => {
                     setFormStatus('error');
-                  }
-                })
-                .catch((e) => {
-                  setFormStatus('error');
-                });
-            }}
-          >
-            {(props) => {
-              return (
-                <Form>
-                  <Stack spacing={4}>
-                    <SelectField
-                      id="reason"
-                      name="Motivo de la consulta"
-                      required
-                    >
-                      {contactType.map((reason: string) => {
-                        return <option value={reason}>{reason}</option>;
-                      })}
-                    </SelectField>
+                  });
+              }}
+            >
+              {(props) => {
+                return (
+                  <Form>
+                    <Stack spacing={4}>
+                      <SelectField
+                        id="reason"
+                        name="Motivo de la consulta"
+                        required
+                      >
+                        {contactType.map((reason: string) => {
+                          return <option value={reason}>{reason}</option>;
+                        })}
+                      </SelectField>
 
-                    <InputField
-                      type="textarea"
-                      id="description"
-                      name="Descripción"
-                      helpText={contactDescription}
-                    />
+                      <InputField
+                        type="textarea"
+                        id="description"
+                        name="Descripción"
+                        helpText={contactDescription}
+                      />
 
-                    <InputField id="name" name="Nombre y Apellido" required />
+                      <InputField id="name" name="Nombre y Apellido" required />
 
-                    <InputField
-                      id="email"
-                      name="Email"
-                      validate={emailValidation}
-                      required
-                    />
+                      <InputField
+                        id="email"
+                        name="Email"
+                        validate={emailValidation}
+                        required
+                      />
 
-                    <InputField id="dni" name="DNI" required />
+                      <InputField id="dni" name="DNI" required />
 
-                    <InputField id="phone" name="Teléfono" required />
+                      <InputField id="phone" name="Teléfono" required />
 
-                    <InputField
-                      id="historyNum"
-                      name="Número de historia clínica (si lo recuerda)"
-                    />
+                      <InputField
+                        id="historyNum"
+                        name="Número de historia clínica (si lo recuerda)"
+                      />
 
-                    <InputField id="address" name="Dirección" />
+                      <InputField id="address" name="Dirección" />
 
-                    <Button
-                      mt={4}
-                      variantColor="blue"
-                      size="lg"
-                      isLoading={props.isSubmitting}
-                      type="submit"
-                    >
-                      Enviar
-                    </Button>
-                  </Stack>
-                </Form>
-              );
-            }}
-          </Formik>
-        </HeroSplitContent.Col>
-      </HeroSplitContent>
+                      <Button
+                        mt={4}
+                        variantColor="blue"
+                        size="lg"
+                        isLoading={props.isSubmitting}
+                        type="submit"
+                      >
+                        Enviar
+                      </Button>
+                    </Stack>
+                  </Form>
+                );
+              }}
+            </Formik>
+          </HeroSplitContent.Col>
+        </HeroSplitContent>
+      </Box>
     </>
   );
 };

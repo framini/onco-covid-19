@@ -1,22 +1,19 @@
-import { GetStaticProps } from 'next';
+import { GetStaticProps, GetStaticPaths } from 'next';
 import { Stack } from '@chakra-ui/core';
-import { Document } from '@contentful/rich-text-types';
 
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { HeroSection } from '../components/hero';
 import { Metatags } from '../components/metatags';
 import { contentfulEntries } from '../contentful/entries';
-import { PageWithGlobalProps, BasePage } from '../types';
+import { PageWithGlobalProps, BasePage, GenericEntryPage } from '../types';
 import { getGlobalProps } from '../utils/global-props';
+import { Entry } from 'contentful';
 
-type RecomendacionesPsicoOncologiaProps = BasePage<{
-  title: string;
-  content: Document;
-}>;
+type GenericPageProps = BasePage<GenericEntryPage>;
 
-const RecomendacionesPsicoOncologia: PageWithGlobalProps<RecomendacionesPsicoOncologiaProps> = (
-  props: RecomendacionesPsicoOncologiaProps,
+const GenericPage: PageWithGlobalProps<GenericPageProps> = (
+  props: GenericPageProps,
 ) => {
   return (
     <>
@@ -24,7 +21,7 @@ const RecomendacionesPsicoOncologia: PageWithGlobalProps<RecomendacionesPsicoOnc
         title="Recomendaciones de Psico-Oncología - Hospital Escuela Eva Perón"
         description="Información general para pacientes en tratamiento oncológico"
       />
-      <Stack spacing={8} alignItems="center">
+      <Stack spacing={8} alignItems="center" pb={10}>
         <HeroSection title={props.pageContent.title} />
         <CenteredContent maxW={800}>
           <Stack spacing={4}>
@@ -37,15 +34,40 @@ const RecomendacionesPsicoOncologia: PageWithGlobalProps<RecomendacionesPsicoOnc
 };
 
 // Workaround until _app supports getStaticProps
-RecomendacionesPsicoOncologia.getGlobalProps = getGlobalProps;
+GenericPage.getGlobalProps = getGlobalProps;
 
-export const getStaticProps: GetStaticProps<RecomendacionesPsicoOncologiaProps> = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const { client } = require('../contentful/client');
 
+  const entries = await client.getEntries({
+    content_type: 'genericPage',
+  });
+
+  const pathsParams = entries.items.map((item: Entry<GenericEntryPage>) => {
+    return {
+      params: {
+        slug: item.fields.slug,
+      },
+    };
+  });
+
+  return {
+    paths: pathsParams,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<GenericPageProps> = async (
+  context,
+) => {
+  const { client } = require('../contentful/client');
+  const { params } = context;
+
   const globalInfo = await client.getEntry(contentfulEntries.globalInfo);
-  const entry = await client.getEntry(
-    contentfulEntries.recomendacionesPsicoOncologica,
-  );
+  const entries = await client.getEntries({
+    content_type: 'genericPage',
+    'fields.slug[in]': params!.slug,
+  });
 
   return {
     props: {
@@ -53,10 +75,10 @@ export const getStaticProps: GetStaticProps<RecomendacionesPsicoOncologiaProps> 
         ...globalInfo.fields,
       },
       pageContent: {
-        ...entry.fields,
+        ...entries.items[0].fields,
       },
     },
   };
 };
 
-export default RecomendacionesPsicoOncologia;
+export default GenericPage;

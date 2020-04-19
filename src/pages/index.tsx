@@ -1,8 +1,8 @@
 import { GetStaticProps } from 'next';
-import { Grid, Stack, Box } from '@chakra-ui/core';
+import { Grid, Stack, Box, Text } from '@chakra-ui/core';
+import { Document } from '@contentful/rich-text-types';
 
 import { EntryAdvice, PageWithGlobalProps, BasePage } from '../types';
-import { Card } from '../components/card';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { HeroWithImage } from '../components/hero';
@@ -10,10 +10,12 @@ import { Metatags } from '../components/metatags';
 import { contentfulEntries } from '../contentful/entries';
 import DoctorImage from '../assets/svg/doctor-woman.svg';
 import { getGlobalProps } from '../utils/global-props';
+import { Advice } from '../components/advice';
 
 type HomeProps = BasePage<{
   title: string;
   info: EntryAdvice[];
+  disclaimer: Document;
 }>;
 
 const Home: PageWithGlobalProps<HomeProps> = (props: HomeProps) => {
@@ -24,7 +26,7 @@ const Home: PageWithGlobalProps<HomeProps> = (props: HomeProps) => {
         description="Información general para pacientes en tratamiento oncológico"
       />
 
-      <Stack spacing={5} backgroundColor="#f7f7f8">
+      <Stack spacing={5} backgroundColor="#f7f7f8" pb={10}>
         <HeroWithImage title={props.pageContent.title}>
           <Box paddingTop={10}>
             <DoctorImage
@@ -43,22 +45,13 @@ const Home: PageWithGlobalProps<HomeProps> = (props: HomeProps) => {
                   return null;
                 }
 
-                return (
-                  <Card>
-                    <Stack spacing={5}>
-                      <Box>
-                        <Card.Title>{advice.fields.title}</Card.Title>
-                      </Box>
-                      <Box>
-                        <Stack spacing={3}>
-                          {documentToReactComponents(advice.fields.content)}
-                        </Stack>
-                      </Box>
-                    </Stack>
-                  </Card>
-                );
+                return <Advice {...advice.fields} />;
               })}
             </Grid>
+
+            <Text fontSize="sm">
+              {documentToReactComponents(props.pageContent.disclaimer)}
+            </Text>
           </Stack>
         </CenteredContent>
       </Stack>
@@ -73,7 +66,9 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const { client } = require('../contentful/client');
 
   const globalInfo = await client.getEntry(contentfulEntries.globalInfo);
-  const entry = await client.getEntry(contentfulEntries.home);
+  const entry = await client.getEntry(contentfulEntries.home, {
+    include: 2,
+  });
 
   return {
     props: {

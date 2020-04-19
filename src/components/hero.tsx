@@ -88,7 +88,7 @@ const HeroWithImage = (props: HeroWithImageProps) => {
         </Box>
         <Hero.Image
           gridArea="image"
-          backgroundColor="blue.100"
+          backgroundColor="blue.300"
           position={['absolute', 'absolute', 'absolute', 'relative']}
           top={0}
           left={0}
