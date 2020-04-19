@@ -44,6 +44,7 @@ export type KnownRoutes =
   | 'contacto'
   | 'preguntas-frecuentes'
   | 'recomendaciones-psico-oncologia'
+  | 'pacientes-en-control'
   | 'generic-page';
 
 export interface RouteDef {

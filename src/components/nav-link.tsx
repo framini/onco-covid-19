@@ -29,6 +29,11 @@ export const NavLink = (props: NavLink) => {
       css={[
         defaultStyles,
         {
+          '&:hover': {
+            color: theme.colors.gray[500],
+          },
+        },
+        {
           color: theme.colors.gray[600],
         },
         props.isActive && {

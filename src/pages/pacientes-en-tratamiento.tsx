@@ -52,7 +52,12 @@ export const getStaticProps: GetStaticProps<PacientesEnTratamientoProps> = async
   const { client } = require('../contentful/client');
 
   const globalInfo = await client.getEntry(contentfulEntries.globalInfo);
-  const entry = await client.getEntry(contentfulEntries.pacientesEnTratamiento);
+  const entry = await client.getEntry(
+    contentfulEntries.pacientesEnTratamiento,
+    {
+      include: 2,
+    },
+  );
 
   return {
     props: {

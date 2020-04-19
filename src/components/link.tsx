@@ -14,7 +14,12 @@ export const Link = (props: Link) => {
     <NextLink href={href} passHref={passHref} as={as}>
       <ChakraLink
         color={theme.colors.purple[500]}
+        borderBottom={`2px solid ${theme.colors.purple[200]}`}
         fontWeight={600}
+        textDecoration="none"
+        _hover={{
+          color: theme.colors.purple[600],
+        }}
         {...restProps}
       >
         {children}

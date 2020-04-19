@@ -23,6 +23,10 @@ export const routesConfig: PathsConfig = {
     href: '/recomendaciones-psico-oncologia',
     name: 'Recomendaciones de Psico-Oncología',
   },
+  'pacientes-en-control': {
+    href: '/pacientes-en-control',
+    name: 'Pacientes en Control',
+  },
   'generic-page': {
     href: '/[slug]',
     pattern: true,
