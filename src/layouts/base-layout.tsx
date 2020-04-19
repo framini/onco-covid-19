@@ -1,5 +1,12 @@
 import React from 'react';
-import { Grid, Box, Alert, AlertIcon, AlertTitle } from '@chakra-ui/core';
+import {
+  Grid,
+  Box,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  useTheme,
+} from '@chakra-ui/core';
 
 import { Header } from '../components/header';
 import { GlobalInfoProps } from '../types';
@@ -12,6 +19,7 @@ interface BaseLayoutProps {
 }
 
 export const BaseLayout = ({ children, globalInfo }: BaseLayoutProps) => {
+  const theme = useTheme();
   return (
     <Grid
       templateAreas={['"header" "content" "footer"']}
@@ -33,6 +41,7 @@ export const BaseLayout = ({ children, globalInfo }: BaseLayoutProps) => {
               textAlign="center"
               maxW="auto"
               boxShadow="inset 0px -1px 5px rgba(189, 206, 219, 0.4)"
+              backgroundColor={theme.colors.teal[100]}
             >
               <Box
                 position="absolute"

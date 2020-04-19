@@ -13,6 +13,7 @@ import {
   useDisclosure,
   List,
   ListItem,
+  css,
 } from '@chakra-ui/core';
 import { FaBars } from 'react-icons/fa';
 import { useRouter } from 'next/router';
@@ -119,8 +120,11 @@ export const Header = () => {
         zIndex={1}
       >
         <Stack direction="row" alignItems="center" height="100%">
-          <Box>
-            <Link {...getRouteProps('home')}>
+          <Box position="relative">
+            <Link
+              css={{ '&:focus': { boxShadow: 'none' } }}
+              {...getRouteProps('home')}
+            >
               <Stack
                 as="span"
                 spacing={isWide ? 4 : 2}

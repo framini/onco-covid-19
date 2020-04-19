@@ -7,6 +7,13 @@ export type GlobalInfoProps = EntryGlobalInfo['fields'] & {
   showGlobalAnnouncement?: boolean;
 };
 
+export type EntryMetatags = Entry<{
+  title: string;
+  description: string;
+  url?: string;
+  image?: string;
+}>;
+
 export type EntryGlobalInfo = Entry<{
   title: string;
   announcement: EntryAnnouncement;
@@ -61,6 +68,7 @@ export type BasePage<T> = {
   globalInfo: GlobalInfoProps;
   pageContent: T & {
     globalAnnouncement?: boolean;
+    metatags: EntryMetatags;
   };
 };
 

@@ -121,10 +121,7 @@ const ContactPage: PageWithGlobalProps<ContactPageProps> = (
 
   return (
     <>
-      <Metatags
-        title="Contacto - Hospital Escuela Eva Perón"
-        description="Información general para pacientes en tratamiento oncológico"
-      />
+      <Metatags {...props.pageContent.metatags.fields} />
 
       <Confirmation status={formStatus} />
 

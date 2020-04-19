@@ -21,10 +21,7 @@ type HomeProps = BasePage<{
 const Home: PageWithGlobalProps<HomeProps> = (props: HomeProps) => {
   return (
     <>
-      <Metatags
-        title="Hospital Escuela Eva Perón"
-        description="Información general para pacientes en tratamiento oncológico"
-      />
+      <Metatags {...props.pageContent.metatags.fields} />
 
       <Stack spacing={5} backgroundColor="#f7f7f8" pb={10}>
         <HeroWithImage title={props.pageContent.title}>

@@ -17,10 +17,8 @@ const GenericPage: PageWithGlobalProps<GenericPageProps> = (
 ) => {
   return (
     <>
-      <Metatags
-        title="Recomendaciones de Psico-Oncología - Hospital Escuela Eva Perón"
-        description="Información general para pacientes en tratamiento oncológico"
-      />
+      <Metatags {...props.pageContent.metatags.fields} />
+
       <Stack spacing={8} alignItems="center" pb={10}>
         <HeroSection title={props.pageContent.title} />
         <CenteredContent maxW={800}>

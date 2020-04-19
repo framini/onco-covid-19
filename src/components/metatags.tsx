@@ -1,13 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { EntryMetatags } from '../types';
 
-type MetatagsProps = {
-  title: string;
-  description: string;
-  url?: string;
-  image?: string;
-};
+type MetatagsProps = EntryMetatags['fields'];
 
 export const Metatags = ({
   article = false,
