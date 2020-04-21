@@ -27,7 +27,7 @@ export const BaseLayout = ({ children, globalInfo }: BaseLayoutProps) => {
       height="100vh"
     >
       <Box gridArea="header">
-        <Header />
+        <Header menu={globalInfo?.menu} />
       </Box>
 
       <Box as="main" gridArea="content">

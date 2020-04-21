@@ -18,6 +18,7 @@ export type EntryGlobalInfo = Entry<{
   title: string;
   announcement: EntryAnnouncement;
   footer: Document;
+  menu: EntryLink[];
 }>;
 
 export type EntryFAQSection = Entry<{

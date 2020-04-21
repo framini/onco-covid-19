@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box,
   Stack,
-  useTheme,
   Drawer,
   Button,
   DrawerBody,
@@ -13,29 +12,34 @@ import {
   useDisclosure,
   List,
   ListItem,
-  css,
 } from '@chakra-ui/core';
 import { FaBars } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 
 import { NavLink } from './nav-link';
 import { Link } from './link';
-import { getRouteProps, isRouteActive } from '../utils/routes';
-import { routesConfig } from '../config/routes';
+import {
+  getRouteProps,
+  isRouteActive,
+  getRoutePropsFromRouteDef,
+} from '../utils/routes';
 import Logo from '../assets/svg/logo.svg';
 import LogoText from '../assets/svg/logo-text.svg';
 import { useIsWide } from '../hooks/use-is-wide';
+import { EntryLink } from '../types';
 
-const InlineMenu = () => {
-  const allRoutes = React.useMemo(() => Object.keys(routesConfig), []);
+interface InlineMenuProps {
+  items: EntryLink[];
+}
+
+const InlineMenu = (props: InlineMenuProps) => {
   const router = useRouter();
 
   return (
     <Stack direction="row" spacing={10}>
-      {allRoutes.map((route: any) => {
-        // @ts-ignore
-        const name = routesConfig[route].name;
-        const routeProps = getRouteProps(route);
+      {props.items.map((item: EntryLink) => {
+        const name = item.fields.title;
+        const routeProps = getRoutePropsFromRouteDef(item.fields.content);
 
         if (name) {
           return (
@@ -58,12 +62,11 @@ interface DrawerMenuProps {
   isOpen: boolean;
   onClose: () => void;
   finalFocusRef: React.MutableRefObject<null>;
+  items: EntryLink[];
 }
 
 const DrawerMenu = React.memo(
-  ({ isOpen, onClose, finalFocusRef }: DrawerMenuProps) => {
-    const allRoutes = React.useMemo(() => Object.keys(routesConfig), []);
-
+  ({ isOpen, onClose, finalFocusRef, items }: DrawerMenuProps) => {
     return (
       <Drawer
         isOpen={isOpen}
@@ -79,14 +82,17 @@ const DrawerMenu = React.memo(
           <DrawerBody>
             <Stack as="nav">
               <List spacing={4}>
-                {allRoutes.map((route: any) => {
-                  // @ts-ignore
-                  const name = routesConfig[route].name;
+                {items.map((item: EntryLink) => {
+                  const name = item.fields.title;
 
                   if (name) {
                     return (
                       <ListItem>
-                        <NavLink {...getRouteProps(route)}>{name}</NavLink>
+                        <NavLink
+                          {...getRoutePropsFromRouteDef(item.fields.content)}
+                        >
+                          {name}
+                        </NavLink>
                       </ListItem>
                     );
                   }
@@ -104,7 +110,11 @@ const DrawerMenu = React.memo(
 
 DrawerMenu.displayName = 'MobileMenu';
 
-export const Header = () => {
+interface HeaderProps {
+  menu?: EntryLink[];
+}
+
+export const Header = (props: HeaderProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef(null);
   const isWide = useIsWide();
@@ -160,7 +170,7 @@ export const Header = () => {
           </Box>
           {isWide ? (
             <Stack alignItems="center" flexGrow={1}>
-              <InlineMenu></InlineMenu>
+              {props.menu && <InlineMenu items={props.menu} />}
             </Stack>
           ) : (
             <Box marginLeft="auto">
@@ -177,8 +187,13 @@ export const Header = () => {
           )}
         </Stack>
       </Box>
-      {!isWide && (
-        <DrawerMenu isOpen={isOpen} onClose={onClose} finalFocusRef={btnRef} />
+      {!isWide && props.menu && (
+        <DrawerMenu
+          items={props.menu}
+          isOpen={isOpen}
+          onClose={onClose}
+          finalFocusRef={btnRef}
+        />
       )}
     </>
   );

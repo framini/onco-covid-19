@@ -1,4 +1,4 @@
-import { KnownRoutes } from '../types';
+import { KnownRoutes, RouteDef } from '../types';
 import { routesConfig } from '../config/routes';
 
 export const isRouteActive = (
@@ -35,12 +35,19 @@ export const getRouteProps = (
 ) => {
   const path = routesConfig[routeName];
 
-  if (path.pattern) {
+  return getRoutePropsFromRouteDef(path, query);
+};
+
+export const getRoutePropsFromRouteDef = (
+  routeDef: RouteDef,
+  query: Record<string, string | string[]> = {},
+) => {
+  if (routeDef.pattern) {
     return {
-      href: path.href,
-      as: buildAsPath(path.href, query),
+      href: routeDef.href,
+      as: buildAsPath(routeDef.href, query),
     };
   }
 
-  return { href: path.href };
+  return { href: routeDef.href };
 };
