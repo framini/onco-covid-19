@@ -34,6 +34,12 @@ export type EntryAdvice = Entry<{
   moreInfo: any;
 }>;
 
+export type EntryPrecaution = Entry<{
+  title: string;
+  content: Document;
+  svgAsset: string;
+}>;
+
 export type EntryAnnouncement = Entry<{
   title: string;
   content: Document;

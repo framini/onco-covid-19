@@ -2,7 +2,12 @@ import { GetStaticProps } from 'next';
 import { Grid, Stack, Box, Text } from '@chakra-ui/core';
 import { Document } from '@contentful/rich-text-types';
 
-import { EntryAdvice, PageWithGlobalProps, BasePage } from '../types';
+import {
+  EntryAdvice,
+  PageWithGlobalProps,
+  BasePage,
+  EntryPrecaution,
+} from '../types';
 import { CenteredContent } from '../components/centered-content';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { HeroWithImage } from '../components/hero';
@@ -11,11 +16,15 @@ import { contentfulEntries } from '../contentful/entries';
 import DoctorImage from '../assets/svg/doctor-woman.svg';
 import { getGlobalProps } from '../utils/global-props';
 import { Advice } from '../components/advice';
+import { Precautions } from '../components/precautions';
+import { H2 } from '../components/h2';
 
 type HomeProps = BasePage<{
   title: string;
   info: EntryAdvice[];
   disclaimer: Document;
+  precautionsTitle: string;
+  precautions: EntryPrecaution[];
 }>;
 
 const Home: PageWithGlobalProps<HomeProps> = (props: HomeProps) => {
@@ -33,6 +42,13 @@ const Home: PageWithGlobalProps<HomeProps> = (props: HomeProps) => {
             />
           </Box>
         </HeroWithImage>
+
+        <CenteredContent>
+          <Stack spacing={8}>
+            <H2>{props.pageContent.precautionsTitle}</H2>
+            <Precautions items={props.pageContent.precautions} />
+          </Stack>
+        </CenteredContent>
 
         <CenteredContent>
           <Stack spacing={8} alignItems="center">

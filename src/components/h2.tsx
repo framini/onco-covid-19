@@ -7,7 +7,7 @@ export const H2 = (props: H2Props) => {
   return (
     <Heading
       as="h2"
-      fontSize={['1.35rem', '1.55rem', '1.9rem']}
+      fontSize={['1.5rem', '1.55rem', '1.9rem']}
       size={'lg'}
       color="blue.800"
       textAlign="center"
