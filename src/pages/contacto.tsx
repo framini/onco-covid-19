@@ -13,6 +13,7 @@ import {
   ModalFooter,
 } from '@chakra-ui/core';
 import { Document } from '@contentful/rich-text-types';
+import fetch from 'isomorphic-unfetch';
 
 import { InputField } from '../components/input-field';
 import { HeroSplitContent } from '../components/hero';
@@ -25,6 +26,7 @@ import { GetStaticProps } from 'next';
 import { createArrayFromString } from '../utils/contentful';
 import { documentToReactComponents } from '../utils/documentToReactComponents';
 import { getGlobalProps } from '../utils/global-props';
+import { useRecaptcha } from '../hooks/use-recaptcha';
 
 type FormStatus = '' | 'success' | 'error';
 
@@ -59,7 +61,7 @@ const Confirmation = (props: ConfirmationProps) => {
       onClose={onClose}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxW="90%">
         <ModalHeader>{title}:</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>{message}</ModalBody>
@@ -92,6 +94,8 @@ type ContactPageProps = BasePage<{
 const ContactPage: PageWithGlobalProps<ContactPageProps> = (
   props: ContactPageProps,
 ) => {
+  const getToken = useRecaptcha('contacto');
+
   const [formStatus, setFormStatus] = React.useState<FormStatus>('');
 
   const emailValidation = React.useCallback((value: string) => {
@@ -152,30 +156,48 @@ const ContactPage: PageWithGlobalProps<ContactPageProps> = (
           <HeroSplitContent.Col padding={5} maxW={['auto', 'auto', 600]}>
             <Formik
               initialValues={initialValues}
-              onSubmit={(values, actions) => {
-                fetch(
-                  'https://api.formik.com/submit/onco-covid-19/primera-vez-en-oncologia',
-                  {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(values),
+              onSubmit={async (values, actions) => {
+                const token = await getToken();
+
+                const validation = await fetch('/api/contact', {
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
                   },
-                )
-                  .then((resp) => resp.json())
-                  .then((resp) => {
-                    actions.setSubmitting(false);
-                    if (resp.ok) {
-                      setFormStatus('success');
-                      actions.resetForm();
-                    } else {
+                  method: 'post',
+                  body: JSON.stringify({
+                    token,
+                  }),
+                }).then((r) => r.json());
+
+                if (validation.ok) {
+                  fetch(
+                    'https://api.formik.com/submit/onco-covid-19/primera-vez-en-oncologia',
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(values),
+                    },
+                  )
+                    .then((resp) => resp.json())
+                    .then((resp) => {
+                      actions.setSubmitting(false);
+                      if (resp.ok) {
+                        setFormStatus('success');
+                        actions.resetForm();
+                      } else {
+                        setFormStatus('error');
+                      }
+                    })
+                    .catch((e) => {
                       setFormStatus('error');
-                    }
-                  })
-                  .catch((e) => {
-                    setFormStatus('error');
-                  });
+                    });
+                } else {
+                  setFormStatus('error');
+                  return;
+                }
               }}
             >
               {(props) => {
@@ -197,6 +219,7 @@ const ContactPage: PageWithGlobalProps<ContactPageProps> = (
                         id="description"
                         name="Descripción"
                         helpText={contactDescription}
+                        required
                       />
 
                       <InputField id="name" name="Nombre y Apellido" required />

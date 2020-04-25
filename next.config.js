@@ -5,6 +5,10 @@ module.exports = {
     // css: false,
   },
 
+  env: {
+    RECAPTCHA_PUBLIC: process.env.RECAPTCHA_PUBLIC,
+  },
+
   webpack(config, { dev, isServer }) {
     const splitChunks = config.optimization && config.optimization.splitChunks;
     if (splitChunks) {
