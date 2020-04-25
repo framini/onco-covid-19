@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }).then((response) => response.json());
 
     // @ts-ignore
-    if (googleResponse.success && googleResponse.score > 0.1) {
+    if (googleResponse.success) {
       return res.status(200).json({ ok: true });
     } else {
       return res.status(400).json({ ok: false });
