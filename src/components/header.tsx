@@ -133,6 +133,7 @@ export const Header = (props: HeaderProps) => {
           <Box position="relative">
             <Link
               css={{ '&:focus': { boxShadow: 'none' } }}
+              aria-label="Hospital de dia Eva Perón"
               {...getRouteProps('home')}
             >
               <Stack

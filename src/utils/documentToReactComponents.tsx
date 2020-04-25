@@ -60,9 +60,22 @@ export const documentToReactComponents = (document: Document) => {
           const content = node.data?.target?.fields?.content;
 
           if (content) {
-            const { query, ...restLink } = content;
+            const { query, name, ...restLink } = content;
 
-            return <Link {...restLink}>{content.name}</Link>;
+            console.log('node', node, content.name);
+
+            const label =
+              node.data?.target?.fields?.title
+                .toLocaleLowerCase()
+                .indexOf('aqu') > -1
+                ? 'envíe su consulta via formulario aquí'
+                : '';
+
+            return (
+              <Link {...restLink} aria-label={label}>
+                {content.name}
+              </Link>
+            );
           } else {
             return null;
           }

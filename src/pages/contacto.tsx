@@ -11,6 +11,7 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  useTheme,
 } from '@chakra-ui/core';
 import { Document } from '@contentful/rich-text-types';
 import fetch from 'isomorphic-unfetch';
@@ -95,6 +96,7 @@ const ContactPage: PageWithGlobalProps<ContactPageProps> = (
   props: ContactPageProps,
 ) => {
   const getToken = useRecaptcha('contacto');
+  const theme = useTheme();
 
   const [formStatus, setFormStatus] = React.useState<FormStatus>('');
 
@@ -248,6 +250,9 @@ const ContactPage: PageWithGlobalProps<ContactPageProps> = (
                         size="lg"
                         isLoading={props.isSubmitting}
                         type="submit"
+                        style={{
+                          background: theme.colors.blue[800],
+                        }}
                       >
                         Enviar
                       </Button>

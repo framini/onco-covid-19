@@ -81,7 +81,7 @@ export const EmbedYouTube = ({ uri }: EmbedYouTubeProps) => {
               <>
                 <picture>
                   <source srcSet={thumbnail.webp} type="image/webp" />
-                  <img src={thumbnail.jpg} />
+                  <img src={thumbnail.jpg} alt="YouTube Video" />
                 </picture>
 
                 <EmbedOverlay>
@@ -91,7 +91,7 @@ export const EmbedYouTube = ({ uri }: EmbedYouTubeProps) => {
                       color="blue"
                     ></CircularProgress>
                   ) : (
-                    <button onClick={onActivate}>
+                    <button onClick={onActivate} aria-label="Reproducir Video">
                       <FaPlayCircle
                         style={{
                           width: 60,

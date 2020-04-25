@@ -4,6 +4,7 @@ import NextLink, { LinkProps } from 'next/link';
 
 type Link = {
   children: React.ReactNode;
+  'aria-label'?: string;
 } & LinkProps;
 
 export const Link = (props: Link) => {
@@ -21,6 +22,7 @@ export const Link = (props: Link) => {
           color: theme.colors.purple[600],
         }}
         {...restProps}
+        aria-label={props['aria-label']}
       >
         {children}
       </ChakraLink>

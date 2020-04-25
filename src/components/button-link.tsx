@@ -4,6 +4,7 @@ import NextLink, { LinkProps } from 'next/link';
 
 type ButtonLink = {
   children: React.ReactNode;
+  'aria-label'?: string;
 } & LinkProps;
 
 export const ButtonLink = (props: ButtonLink) => {
@@ -23,6 +24,7 @@ export const ButtonLink = (props: ButtonLink) => {
         _hover={{
           backgroundColor: 'rgba(128, 90, 213, 0.05)',
         }}
+        aria-label={props['aria-label']}
       >
         {children}
       </ChakraLink>

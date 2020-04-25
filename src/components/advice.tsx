@@ -31,6 +31,7 @@ export const Advice = ({ title, content, moreInfo }: AdviceProps) => {
               {...getRouteProps('generic-page', {
                 slug: moreInfo.fields.slug,
               })}
+              aria-label={`Leer más acerca de ${title}`}
             >
               Leer más
             </ButtonLink>
