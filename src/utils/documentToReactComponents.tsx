@@ -62,8 +62,6 @@ export const documentToReactComponents = (document: Document) => {
           if (content) {
             const { query, name, ...restLink } = content;
 
-            console.log('node', node, content.name);
-
             const label =
               node.data?.target?.fields?.title
                 .toLocaleLowerCase()

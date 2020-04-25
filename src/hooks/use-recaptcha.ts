@@ -30,47 +30,5 @@ export const useRecaptcha = (action: string): (() => Promise<string>) => {
     return Promise.resolve('idle');
   }, [scriptStatus]);
 
-  // const getToken = React.useCallback(() => {
-  //   // @ts-ignore
-  //   const grecaptcha = window.grecaptcha;
-
-  //   grecaptcha.ready(() => {
-  //     grecaptcha
-  //       .execute(process.env.RECAPTCHA_PUBLIC, { action })
-  //       .then((t: string) => {
-
-  //         setToken(t);
-
-  //       });
-  //   });
-  // }, [])
-
-  // React.useEffect(() => {
-  //   let ignore = false;
-
-  //   if (scriptStatus === 'loaded') {
-  //     // @ts-ignore
-  //     const grecaptcha = window.grecaptcha;
-
-  //     grecaptcha.ready(() => {
-  //       grecaptcha
-  //         .execute(process.env.RECAPTCHA_PUBLIC, { action })
-  //         .then((token: string) => {
-  //           if (!ignore) {
-  //             console.log('token', token);
-
-  //             setToken(token);
-  //           }
-  //         });
-  //     });
-  //   } else if (scriptStatus === 'error') {
-  //     console.log('ALGO FUE MAL');
-  //   }
-
-  //   return () => {
-  //     ignore = true;
-  //   };
-  // }, [scriptStatus]);
-
   return getToken;
 };

@@ -1,4 +1,7 @@
 {
+  "env": {
+    "RECAPTCHA_SECRET": "@recaptcha_secret"
+  },
   "build": {
     "env": {
       "CONTENTFUL_SPACE_ID": "@contentful_space_id",
