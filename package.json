@@ -12,6 +12,7 @@
     "@contentful/rich-text-react-renderer": "^13.4.0",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "@framini/react-lazy-embed": "^1.0.0-beta.0",
     "@svgr/webpack": "^5.3.1",
     "contentful": "^7.14.2",
     "emotion": "^10.0.27",

@@ -1292,6 +1292,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
+"@framini/react-lazy-embed@^1.0.0-beta.0":
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@framini/react-lazy-embed/-/react-lazy-embed-1.0.0-beta.0.tgz#85ad53719a4446da3bb0c0bf8a604f0bc3375c0e"
+  integrity sha512-jQi92/zQoje4oeg0OIqVk1AyuNJzk2Ad3z5hiHTAjySpHq/P4WWJLk2Xkpbe5zfjD8FSeFeTT7jRKjQCyG0Bxw==
+
 "@reach/alert@^0.1.2":
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@reach/alert/-/alert-0.1.5.tgz#4da79add0055fa4295f51e5295ed3b80257e9153"
