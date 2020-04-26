@@ -39,7 +39,11 @@ const InlineMenu = (props: InlineMenuProps) => {
     <Stack direction="row" spacing={10}>
       {props.items.map((item: EntryLink) => {
         const name = item.fields.title;
-        const routeProps = getRoutePropsFromRouteDef(item.fields.content);
+
+        const routeProps = getRoutePropsFromRouteDef(
+          item.fields.content,
+          item.fields.content.query,
+        );
 
         if (name) {
           return (
@@ -89,7 +93,10 @@ const DrawerMenu = React.memo(
                     return (
                       <ListItem>
                         <NavLink
-                          {...getRoutePropsFromRouteDef(item.fields.content)}
+                          {...getRoutePropsFromRouteDef(
+                            item.fields.content,
+                            item.fields.content.query,
+                          )}
                         >
                           {name}
                         </NavLink>

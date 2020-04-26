@@ -11,12 +11,15 @@ type NavLink = {
 } & LinkProps;
 
 const defaultStyles = css({
-  padding: '5px 0',
+  padding: '5px 5px',
   border: 0,
   borderRadius: '4px',
   fontWeight: 600,
   '&:hover': {
     textDecoration: 'none',
+  },
+  ':focus': {
+    boxShadow: `0 0 0 2px #9bcaeb`,
   },
 });
 
@@ -46,7 +49,7 @@ export const NavLink = (props: NavLink) => {
             width: '100%',
             bottom: '0px',
             left: 0,
-            height: '3px',
+            height: '2px',
             backgroundColor: theme.colors.blue[400],
           },
         },
