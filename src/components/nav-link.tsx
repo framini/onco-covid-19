@@ -21,6 +21,7 @@ const defaultStyles = css({
   ':focus': {
     boxShadow: `0 0 0 2px #9bcaeb`,
   },
+  boxDecorationBreak: 'clone',
 });
 
 export const NavLink = (props: NavLink) => {
