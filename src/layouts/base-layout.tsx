@@ -12,6 +12,7 @@ import { Header } from '../components/header';
 import { GlobalInfoProps } from '../types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { Footer } from '../components/footer';
+import { useScript } from '../hooks/use-script';
 
 interface BaseLayoutProps {
   children: React.ReactNode;
@@ -20,6 +21,11 @@ interface BaseLayoutProps {
 
 export const BaseLayout = ({ children, globalInfo }: BaseLayoutProps) => {
   const theme = useTheme();
+
+  useScript(
+    'https://s.cliengo.com/weboptimizer/5f60cbfb109f56002af2cf50/5f60fb7b109f56002af2e3e1.js',
+  );
+
   return (
     <Grid
       templateAreas={['"header" "content" "footer"']}
